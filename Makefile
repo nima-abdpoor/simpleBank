@@ -13,7 +13,13 @@ migrateUp:
 migrateDown:
 	./migrate --path /home/nima/GolandProjects/excercise/db/migration --database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" --verbose down
 
+migrateUpW:
+	migrate -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -path ./db/migration up
+
+migrateDownW:
+	migrate -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -path ./db/migration down
+
 sqlc:
 	sqlc generate
 
-.PHONY:postgresql createDB dropDB migrateUp migrateUp sqlc
+.PHONY:postgresql createDB dropDB migrateUp migrateDownW migrateDownW migrateUp sqlc
