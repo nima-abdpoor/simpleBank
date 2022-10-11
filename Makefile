@@ -22,4 +22,7 @@ migrateDownW:
 sqlc:
 	sqlc generate
 
-.PHONY:postgresql createDB dropDB migrateUp migrateDownW migrateDownW migrateUp sqlc
+test:
+	go test -v ./...
+
+.PHONY:postgresql createDB dropDB migrateUp migrateDownW migrateDownW migrateUp sqlc test

@@ -8,10 +8,6 @@ values ($1, $2, $3) RETURNING *;
 SELECT * FROM accounts
 WHERE id = $1 LIMIT 1;
 
--- name: GetAllAccounts :many
-SELECT * FROM accounts
-ORDER BY name;
-
 -- name: ListAccounts :many
 SELECT * FROM accounts
 ORDER BY id
