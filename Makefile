@@ -22,6 +22,9 @@ migrateDownW:
 sqlc:
 	sqlc generate
 
+sqlcW:
+	docker run --rm -v "C:\Users\Nima\GolandProjects\simpleBank:/src" -w /src kjconroy/sqlc generate
+
 test:
 	go test -v ./...
 

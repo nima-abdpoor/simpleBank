@@ -45,40 +45,6 @@ func (q *Queries) DeleteTransfer(ctx context.Context, id int64) error {
 	return err
 }
 
-const getAllTransfers = `-- name: GetAllTransfers :many
-SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
-ORDER BY id
-`
-
-func (q *Queries) GetAllTransfers(ctx context.Context) ([]Transfers, error) {
-	rows, err := q.db.QueryContext(ctx, getAllTransfers)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Transfers
-	for rows.Next() {
-		var i Transfers
-		if err := rows.Scan(
-			&i.ID,
-			&i.FromAccountID,
-			&i.ToAccountID,
-			&i.Amount,
-			&i.CreatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const getTransfer = `-- name: GetTransfer :one
 SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
 WHERE id = $1 LIMIT 1

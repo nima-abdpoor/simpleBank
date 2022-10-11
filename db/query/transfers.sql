@@ -8,10 +8,6 @@ values ($1, $2, $3) RETURNING *;
 SELECT * FROM transfers
 WHERE id = $1 LIMIT 1;
 
--- name: GetAllTransfers :many
-SELECT * FROM transfers
-ORDER BY id;
-
 -- name: ListTransfers :many
 SELECT *
 FROM transfers
