@@ -8,8 +8,7 @@ import (
 	"testing"
 )
 
-func createRandomEntry(t *testing.T) Entries {
-	account := createRandomAccount(t)
+func createRandomEntry(t *testing.T, account Accounts) Entries {
 	arg := CreateEntryParams{
 		AccountID: account.ID,
 		Amount:    util.RandomInt(-2000, +2000),
@@ -26,11 +25,13 @@ func createRandomEntry(t *testing.T) Entries {
 }
 
 func TestQueries_CreateEntry(t *testing.T) {
-	createRandomEntry(t)
+	account := createRandomAccount(t)
+	createRandomEntry(t, account)
 }
 
 func TestQueries_DeleteEntry(t *testing.T) {
-	entry := createRandomEntry(t)
+	account := createRandomAccount(t)
+	entry := createRandomEntry(t, account)
 	err := testQueries.DeleteEntry(context.Background(), entry.ID)
 	require.NoError(t, err)
 	entry2, err2 := testQueries.GetEntry(context.Background(), entry.ID)
@@ -39,7 +40,8 @@ func TestQueries_DeleteEntry(t *testing.T) {
 }
 
 func TestQueries_GetEntry(t *testing.T) {
-	entry := createRandomEntry(t)
+	account := createRandomAccount(t)
+	entry := createRandomEntry(t, account)
 	actualEntry, err := testQueries.GetEntry(context.Background(), entry.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, actualEntry)
@@ -50,7 +52,8 @@ func TestQueries_GetEntry(t *testing.T) {
 }
 
 func TestQueries_UpdateEntry(t *testing.T) {
-	entry := createRandomEntry(t)
+	account := createRandomAccount(t)
+	entry := createRandomEntry(t, account)
 	arg := UpdateEntryParams{
 		ID:        entry.ID,
 		AccountID: entry.AccountID,
@@ -68,12 +71,12 @@ func TestQueries_UpdateEntry(t *testing.T) {
 }
 
 func TestQueries_GetAllEntries(t *testing.T) {
+	account := createRandomAccount(t)
 	for i := 0; i < 10; i++ {
-		createRandomEntry(t)
+		createRandomEntry(t, account)
 	}
-	entry := createRandomEntry(t)
 	arg := ListEntriesParams{
-		AccountID: entry.AccountID,
+		AccountID: account.ID,
 		Limit:     5,
 		Offset:    5,
 	}
