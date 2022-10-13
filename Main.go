@@ -18,8 +18,11 @@ type Article struct {
 type Articles []Article
 
 func main() {
-	CheckDatabase()
-	handleRequests()
+	//Article{Title: "Salam", Desc: "Some Description", Content: "Content1"}.test(alaskd())
+}
+
+func (article Article) test(fn func(article Article) error) {
+	fn(Article{Title: "Salam", Desc: "Some Description", Content: "Content1"})
 }
 
 func handleRequests() {
