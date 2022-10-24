@@ -18,7 +18,7 @@ type Article struct {
 type Articles []Article
 
 func main() {
-	//Article{Title: "Salam", Desc: "Some Description", Content: "Content1"}.test(alaskd())
+	handleRequests()
 }
 
 func (article Article) test(fn func(article Article) error) {
@@ -27,11 +27,25 @@ func (article Article) test(fn func(article Article) error) {
 
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
-	myRouter.HandleFunc("/", homePage).Methods("GET").Host("192.168.10.25")
+	myRouter.HandleFunc("/", homePage).Methods("GET")
+	myRouter.HandleFunc("/log-android", getLogs).Methods("POST")
 	myRouter.HandleFunc("/articles", allArticles).Methods("GET")
 	myRouter.HandleFunc("/articles/{title}", getArticle).Methods("GET")
 	myRouter.HandleFunc("/articles", allPostArticles).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8080", myRouter))
+}
+
+func getLogs(writer http.ResponseWriter, request *http.Request) {
+	var p Log
+	json.NewDecoder(request.Body).Decode(&p)
+	fmt.Println("key:", p.Key, " value:", p.Value, "device:", p.Device)
+	fmt.Fprintf(writer, p.Value)
+}
+
+type Log struct {
+	Key    string `json:"key"`
+	Value  string `json:"value"`
+	Device string `json:"device"`
 }
 
 func CheckDatabase() {
